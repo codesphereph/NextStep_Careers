@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>NextStep</title>
+<meta name="description" content="NextStep: your Senior High School to College to Career roadmap.">
+<meta name="theme-color" content="#0551A0">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="167x167" href="apple-touch-icon-167.png">
+<link rel="apple-touch-icon" sizes="152x152" href="apple-touch-icon-152.png">
+<link rel="apple-touch-icon" sizes="120x120" href="apple-touch-icon-120.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="NextStep">
+<style>
+  :root{
+    --blue:#0551A0;
+    --blue-deep:#0B2E5C;
+    --green:#2E9E2B;
+    --sun:#F2B705;
+    --paper:#F4F8FC;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--paper);overflow:hidden}
+  #appFrame{position:fixed;inset:0;width:100%;height:100%;border:0;background:var(--paper)}
+
+  /* ---------- splash ---------- */
+  #splash{
+    position:fixed;inset:0;z-index:10;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:22px;
+    background:radial-gradient(circle at 50% 38%, #FFFFFF 0%, #E7F0FA 75%);
+    padding:env(safe-area-inset-top,0px) 20px env(safe-area-inset-bottom,0px);
+    transition:opacity .5s ease, visibility .5s ease;
+  }
+  #splash.hide{opacity:0;visibility:hidden}
+
+  .logo-wrap{position:relative;width:210px;height:210px;display:flex;align-items:center;justify-content:center}
+  .logo-wrap img{
+    width:140px;height:140px;border-radius:50%;background:#fff;object-fit:contain;padding:10px;
+    box-shadow:0 0 34px rgba(5,81,160,.22);position:relative;z-index:2;
+  }
+  .ring{position:absolute;border-radius:50%;border:3px solid transparent}
+  .r1{width:210px;height:210px;border-top-color:var(--blue);border-right-color:var(--blue);animation:spin 1.6s linear infinite;filter:drop-shadow(0 0 7px rgba(5,81,160,.45))}
+  .r2{width:170px;height:170px;border-bottom-color:var(--green);border-left-color:var(--green);animation:spin 2.2s linear infinite reverse;filter:drop-shadow(0 0 6px rgba(46,158,43,.4))}
+  .r3{width:126px;height:126px;border-top-color:var(--sun);border-left-color:var(--sun);animation:spin 1.1s linear infinite;filter:drop-shadow(0 0 5px rgba(242,183,5,.5))}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .brand{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:var(--blue-deep);font-weight:800;font-size:26px;letter-spacing:.5px;text-align:center;
+  }
+  .brand span{color:var(--green)}
+  .tagline{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    color:#5A6B84;font-size:11.5px;letter-spacing:2.5px;text-transform:uppercase;margin-top:-14px;text-align:center;
+  }
+  .retry{margin-top:6px;display:none;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .retry a{color:var(--blue);font-size:13px;text-decoration:underline;cursor:pointer}
+
+  /* ---------- install banner ---------- */
+  #install{
+    position:fixed;left:12px;right:12px;z-index:20;
+    bottom:calc(12px + env(safe-area-inset-bottom,0px));
+    display:none;align-items:center;gap:12px;
+    background:#fff;border:1px solid #CFDDEA;border-radius:16px;padding:12px 14px;
+    box-shadow:0 14px 34px rgba(8,30,60,.18);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    max-width:460px;margin:0 auto;
+  }
+  #install.show{display:flex}
+  #install img{width:44px;height:44px;border-radius:12px;flex:none}
+  #install .txt{flex:1;min-width:0}
+  #install strong{display:block;font-size:15px;color:#0B2E5C}
+  #install p{margin:2px 0 0;font-size:12.5px;line-height:1.35;color:#5A6B84}
+  #install button{
+    border:0;border-radius:999px;padding:9px 16px;font:600 14px inherit;cursor:pointer;
+    background:var(--blue);color:#fff;flex:none;min-height:40px;
+  }
+  #install .x{background:transparent;color:#5A6B84;padding:8px 6px;min-height:0;font-size:16px}
+</style>
+</head>
+<body>
+  <iframe
+    id="appFrame"
+    title="NextStep"
+    allow="camera; clipboard-write; clipboard-read">
+  </iframe>
+
+  <div id="splash">
+    <div class="logo-wrap">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <img src="icon-192.png" alt="NextStep logo">
+    </div>
+    <div class="brand">Next<span>Step</span></div>
+    <div class="tagline">Senior High to Career Roadmap</div>
+    <div class="retry" id="retry">
+      <a id="retryLink">Taking too long? Tap to retry</a>
+    </div>
+  </div>
+
+  <div id="install" role="dialog" aria-label="Install NextStep">
+    <img src="icon-192.png" alt="">
+    <div class="txt">
+      <strong>Install NextStep</strong>
+      <p id="installText">Add it to your home screen for faster access.</p>
+    </div>
+    <button id="installBtn" type="button">Install</button>
+    <button class="x" id="installClose" type="button" aria-label="Dismiss">&#10005;</button>
+  </div>
+
+<script>
+  // ---- Hardcoded Apps Script web app URL ----
+  var APP_URL = 'https://script.google.com/macros/s/AKfycbyCorLFdTSKpjydJv7VWAypndOTzYFXHO5npBOoezs4UuaPBX7IIqqtIRCnVdbahTtbEA/exec';
+
+  var frame  = document.getElementById('appFrame');
+  var splash = document.getElementById('splash');
+  var retry  = document.getElementById('retry');
+  var hidden = false;
+
+  function hideSplash(){ if(hidden) return; hidden = true; splash.classList.add('hide'); }
+
+  frame.addEventListener('load', function(){ setTimeout(hideSplash, 350); });
+
+  setTimeout(function(){ if(!hidden) retry.style.display = 'block'; }, 15000);
+  document.getElementById('retryLink').addEventListener('click', function(){
+    retry.style.display = 'none';
+    frame.src = APP_URL + (APP_URL.indexOf('?') < 0 ? '?' : '&') + 'r=' + Date.now();
+  });
+
+  frame.src = APP_URL;
+
+  // ---- Install banner ----
+  var bar = document.getElementById('install');
+  var installBtn = document.getElementById('installBtn');
+  var installText = document.getElementById('installText');
+  var deferred = null;
+
+  function store(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+  function read(k){ try { return localStorage.getItem(k); } catch (e) { return null; } }
+
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  var dismissed = read('ns_install_dismissed') === '1';
+
+  function showBar(){ if(!standalone && !dismissed) bar.classList.add('show'); }
+  function hideBar(){ bar.classList.remove('show'); }
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferred = e;
+    setTimeout(showBar, 2500);
+  });
+
+  installBtn.addEventListener('click', function(){
+    if (deferred) {
+      deferred.prompt();
+      deferred.userChoice.then(function(){ deferred = null; hideBar(); });
+    } else {
+      hideBar();
+    }
+  });
+
+  document.getElementById('installClose').addEventListener('click', function(){
+    store('ns_install_dismissed', '1');
+    hideBar();
+  });
+
+  window.addEventListener('appinstalled', function(){ store('ns_install_dismissed', '1'); hideBar(); });
+
+  // iOS Safari has no install prompt, so show the steps instead
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isIOS && !standalone && !dismissed) {
+    installText.textContent = 'Tap the Share button, then "Add to Home Screen".';
+    installBtn.style.display = 'none';
+    setTimeout(showBar, 3000);
+  }
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+</script>
+</body>
+</html>
